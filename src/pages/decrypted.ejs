@@ -15,25 +15,35 @@
       }
 
       .max-w-3xl {
-        box-shadow: 6px 4px 8px 9px rgba(128, 0, 128, 0.5);
+        box-shadow: 0 10px 30px 0 rgba(128, 0, 128, 0.5);
+      }
+
+      button {
+        box-shadow: 0 10px 30px 0 rgba(128, 0, 128, 0.5);
+        background-color: #450445;
+      }
+
+      textarea {
+        background-color: rgba(0, 0, 0, 0.963);
       }
     </style>
   </head>
   <body class="bg-black text-white h-screen flex items-center justify-center">
     <div class="flex flex-col items-center">
       <div
-        class="max-w-3xl p-8 bg-black rounded-lg border-2 border-purple-500 shadow-lg"
+        class="max-w-3xl p-8 bg-black rounded-lg border-2 border-white shadow-lg"
       >
-        <h1 class="text-3xl font-semibold mb-4">You've received a message.</h1>
+        <h1 class="text-4xl font-bold mb-4">You've received a message.</h1>
         <p class="text-gray-500 mb-6">
-          This message end to end encrypted. Only the sender and the receiver
-          can read the message, deleted after the first read.
+          End to end encrypted. Only you and the receiver can read the message,
+          deleted after the first read.
         </p>
         <div class="mb-6">
           <textarea
             id="textarea"
-            rows="16"
-            class="w-full p-2 bg-black outline-none"
+            rows="14"
+            placeholder="Say some stuff"
+            class="w-full p-2 outline-none"
           ></textarea>
         </div>
       </div>
