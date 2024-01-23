@@ -27,11 +27,10 @@ const generateId = (): string => uuidv4();
 app.get("/", (req: Request, res: Response) => {
   let { i, t } = req.query;
 
-  if (!i || !t) {
-    return res.render("index.ejs");
-  } else {
-    return res.render("decrypted.ejs", { i, t });
-  }
+  if (i && t)
+    return res.render("index.ejs", { i, t, encrypt: false, decrypt: true });
+  else 
+    return res.render("index.ejs", { i, t, encrypt: true, decrypt: false });
 });
 
 app.post("/api/new", (req: Request, res: Response) => {
