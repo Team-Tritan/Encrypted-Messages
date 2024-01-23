@@ -30,15 +30,29 @@
           ></textarea>
         </div>
       </div>
-      <button class="mt-10 bg-purple-900 text-white py-2 px-4 w-1/5 rounded-md">
+      <button
+        id="send"
+        class="mt-10 bg-purple-900 text-white py-2 px-4 w-1/5 rounded-md"
+      >
         Send
+      </button>
+
+      <button
+        id="copy"
+        class="mt-10 bg-purple-900 text-white py-2 px-4 w-1/5 rounded-md"
+      >
+        Copy
       </button>
     </div>
   </body>
 </html>
 
 <script>
-  $("button").click(function () {
+  $(document).ready(function () {
+    $("#copy").hide();
+  });
+
+  $("#send").click(function () {
     let text = $("#textarea").val();
 
     if (text.length < 1) {
@@ -57,10 +71,26 @@
         let url = `https://encrypt.tritan.gg/?i=${data.id}&t=${data.token}`;
 
         $("#textarea").val(url);
+
+        $("#send").hide();
+        $("#copy").show();
       },
       error: function (xhr, status, error) {
         alert("Error: " + error);
       },
     });
+  });
+
+  $("#copy").click(function () {
+    let text = $("#textarea").val();
+
+    navigator.clipboard.writeText(text).then(
+      function () {
+        alert("Copied to clipboard.");
+      },
+      function (err) {
+        alert("Error: " + err);
+      }
+    );
   });
 </script>
