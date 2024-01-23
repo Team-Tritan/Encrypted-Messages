@@ -51,7 +51,7 @@
       data: JSON.stringify({ text: text }),
       contentType: "application/json",
       success: function (data) {
-        let text = data.message;
+        let text = data.text;
         $("#textarea").val(text).prop("readonly", true).attr("disabled", true);
       },
       error: function (xhr, status, error) {
