@@ -43,6 +43,13 @@
       >
         Copy
       </button>
+
+      <button
+        id="reset"
+        class="mt-10 bg-purple-900 text-white py-2 px-4 w-1/5 rounded-md"
+      >
+        Reset
+      </button>
     </div>
   </body>
 </html>
@@ -50,6 +57,7 @@
 <script>
   $(document).ready(function () {
     $("#copy").hide();
+    $("#reset").hide();
   });
 
   $("#send").click(function () {
@@ -70,7 +78,7 @@
       success: function (data) {
         let url = `https://encrypt.tritan.gg/?i=${data.id}&t=${data.token}`;
 
-        $("#textarea").val(url);
+        $("#textarea").val(url).prop("readonly", true).attr("disabled", true);
 
         $("#send").hide();
         $("#copy").show();
@@ -92,5 +100,15 @@
         alert("Error: " + err);
       }
     );
+
+    $("#copy").hide();
+    $("#reset").show();
+  });
+
+  $("#reset").click(function () {
+    $("#textarea").val("").prop("readonly", false).attr("disabled", false);
+
+    $("#reset").hide();
+    $("#send").show();
   });
 </script>
