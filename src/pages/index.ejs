@@ -49,6 +49,16 @@
   $("button").click(function () {
     let text = $("#textarea").val();
 
+    if (text.length < 1) {
+      alert("Please enter some text.");
+      return;
+    }
+
+    $("#textarea")
+      .val("Encrypting...")
+      .prop("readonly", true)
+      .attr("disabled", true);
+
     $.ajax({
       type: "POST",
       url: "/api/new",

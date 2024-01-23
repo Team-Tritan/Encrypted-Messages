@@ -58,7 +58,7 @@
         let text = xhr.responseJSON.message;
 
         $("#textarea")
-          .val(`Error: ${text}`)
+          .val(`${text}`)
           .prop("readonly", true)
           .attr("disabled", true);
       },

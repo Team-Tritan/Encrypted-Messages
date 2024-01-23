@@ -64,7 +64,7 @@ app.get("/api/fetch", (req: Request, res: Response) => {
   if (!secret || secret.token !== t)
     return res
       .status(404)
-      .json({ error: 404, message: "Secret not found or invalid token." });
+      .json({ error: 404, message: "The link you provided is not valid." });
 
   const decryptedText = decryptText(secret.encryptedText);
 
@@ -72,9 +72,7 @@ app.get("/api/fetch", (req: Request, res: Response) => {
     delete secrets[i];
     res.status(200).json({ text: decryptedText });
   } else {
-    res
-      .status(500)
-      .json({ error: 500, message: "Error decrypting the secret." });
+    res.status(500).json({ error: 500, message: "Error decrypting." });
   }
 });
 
