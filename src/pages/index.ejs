@@ -55,7 +55,7 @@
       data: JSON.stringify({ text: text }),
       contentType: "application/json",
       success: function (data) {
-        let url = `https://encrypting.tritan.gg/?i=${data.id}&t=${data.token}`;
+        let url = `https://encrypt.tritan.gg/?i=${data.id}&t=${data.token}`;
 
         $("#textarea").val(url).prop("readonly", true).attr("disabled", true);
 
