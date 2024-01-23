@@ -66,7 +66,10 @@ app.get("/api/fetch", (req: Request, res: Response) => {
   if (!secret || secret.token !== t)
     return res
       .status(404)
-      .json({ error: 404, message: "The link you provided is not valid." });
+      .json({
+        error: 404,
+        message: "The decrypted message could not be found on the server.",
+      });
 
   const decryptedText = decryptText(secret.encryptedText);
 
