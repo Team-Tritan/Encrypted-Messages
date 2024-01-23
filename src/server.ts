@@ -4,7 +4,6 @@ import express, { type Request, type Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { encryptText, decryptText, validateRequestBody } from "./utils";
 import { notFoundHandler, errorHandler } from "./middleware";
-import ejs from "ejs";
 import config from "../config";
 
 interface Secret {
@@ -20,8 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.set("views", "pages");
+app.disable("x-powered-by");
 
-const secrets: Record<string, Secret> = {};
+let secrets: Record<string, Secret> = {};
 const generateId = (): string => uuidv4();
 
 app.get("/", (req: Request, res: Response) => {
