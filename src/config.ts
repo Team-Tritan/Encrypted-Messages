@@ -1,6 +1,6 @@
 "use strict";
 
 export default {
-  port: 8069,
+  port: 3000,
   secretKey: "",
 };
