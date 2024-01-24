@@ -28,6 +28,7 @@ const Main = () => {
       const response: AxiosResponse = await instance.post("/new", {
         text: textareaValue,
       });
+
       const url = baseUrl + `?i=${response.data.id}&t=${response.data.token}`;
 
       setTextareaValue(url);
