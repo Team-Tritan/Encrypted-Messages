@@ -17,9 +17,9 @@ export class RedisWrapper {
     });
   }
 
-  async set(key: string, value: string): Promise<void> {
-    // Set the key with an expiration time of 24 hours
-    await this.client.setex(key, 24 * 60 * 60, value);
+  async set(key: string, value: string, hours: number): Promise<void> {
+    let exp = hours * 60 * 60;
+    await this.client.setex(key, exp, value);
   }
 
   async get(key: string): Promise<string | null> {

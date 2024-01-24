@@ -34,17 +34,17 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/api/new", async (req: Request, res: Response) => {
-  const text = validateRequestBody(req, res);
-  if (!text) return;
+  const validReq = validateRequestBody(req, res);
+  if (!validReq) return;
 
   try {
     const id = generateId();
     const token = generateId();
-    const encryptedText = encryptText(text);
+    const encryptedText = encryptText(validReq.text);
 
     const secret: Secret = { id, token, encryptedText };
 
-    redisWrapper.set(id, JSON.stringify(secret));
+    redisWrapper.set(id, JSON.stringify(secret), validReq.hours);
 
     res.status(200).json({ id, token });
   } catch (err) {
@@ -86,10 +86,7 @@ app.get("/api/fetch", async (req: Request, res: Response) => {
 
     if (decryptedText) {
       await redisWrapper.del(i);
-
-      res.status(200).json({ text: decryptedText });
-    } else {
-      res.status(500).json({ error: 500, message: "Error decrypting." });
+      return res.status(200).json({ text: decryptedText });
     }
   } catch (err) {
     console.error(err);
