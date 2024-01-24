@@ -66,21 +66,19 @@ app.get("/api/fetch", async (req: Request, res: Response) => {
   try {
     const secret = await redisWrapper.get(i);
 
-    if (!secret) {
+    if (!secret)
       return res.status(404).json({
         error: 404,
         message: "The decrypted message could not be found on the server.",
       });
-    }
 
     const secretParsed = JSON.parse(secret) as Secret;
 
-    if (secretParsed.token !== t) {
+    if (secretParsed.token !== t)
       return res.status(403).json({
         error: 403,
         message: "The token provided is not valid.",
       });
-    }
 
     const decryptedText = decryptText(secretParsed.encryptedText);
 
