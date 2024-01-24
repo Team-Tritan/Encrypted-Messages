@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "cd src && nodemon --exec ts-node server.ts",
-    "build": "tsc -p . && cp -r src/pages dist/ && cp -r src/public dist/",
+    "build": "tsc -p . && cp -r pages dist/ && cp -r /public dist/",
     "start": "cd dist && node server.js"
   }
 }
