@@ -4,7 +4,8 @@ import express, { type Request, type Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { encryptText, decryptText, validateRequestBody } from "./utils";
 import { notFoundHandler, errorHandler } from "./middleware";
-import config from "../config";
+import config from "./config";
+import { RedisWrapper } from "./utils/redis";
 
 interface Secret {
   id: string;
@@ -21,7 +22,7 @@ app.set("view engine", "ejs");
 app.set("views", "pages");
 app.disable("x-powered-by");
 
-let secrets: Record<string, Secret> = {};
+const redisWrapper = new RedisWrapper();
 const generateId = (): string => uuidv4();
 
 app.get("/", (req: Request, res: Response) => {
@@ -29,25 +30,30 @@ app.get("/", (req: Request, res: Response) => {
 
   if (i && t)
     return res.render("index.ejs", { i, t, encrypt: false, decrypt: true });
-  else 
-    return res.render("index.ejs", { i, t, encrypt: true, decrypt: false });
+  else return res.render("index.ejs", { i, t, encrypt: true, decrypt: false });
 });
 
-app.post("/api/new", (req: Request, res: Response) => {
+app.post("/api/new", async (req: Request, res: Response) => {
   const text = validateRequestBody(req, res);
   if (!text) return;
 
-  const id = generateId();
-  const token = generateId();
-  const encryptedText = encryptText(text);
+  try {
+    const id = generateId();
+    const token = generateId();
+    const encryptedText = encryptText(text);
 
-  const secret: Secret = { id, token, encryptedText };
-  secrets[id] = secret;
+    const secret: Secret = { id, token, encryptedText };
 
-  res.status(200).json({ id, token });
+    redisWrapper.set(id, JSON.stringify(secret));
+
+    res.status(200).json({ id, token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 500, message: "Error encrypting." });
+  }
 });
 
-app.get("/api/fetch", (req: Request, res: Response) => {
+app.get("/api/fetch", async (req: Request, res: Response) => {
   const { i, t } = req.query;
 
   if (typeof i !== "string" || typeof t !== "string")
@@ -60,26 +66,33 @@ app.get("/api/fetch", (req: Request, res: Response) => {
       .status(400)
       .json({ error: 400, message: "Invalid query parameters." });
 
-  const secret = secrets[i];
+  try {
+    const secret = (await redisWrapper.get(i)) as string;
+    const secretParsed = JSON.parse(secret) as Secret;
 
-  if (!secret)
-    return res.status(404).json({
-      error: 404,
-      message: "The decrypted message could not be found on the server.",
-    });
+    if (!secret)
+      return res.status(404).json({
+        error: 404,
+        message: "The decrypted message could not be found on the server.",
+      });
 
-  if (secret.token !== t)
-    return res.status(403).json({
-      error: 403,
-      message: "The token provided is not valid.",
-    });
+    if (secretParsed.token !== t)
+      return res.status(403).json({
+        error: 403,
+        message: "The token provided is not valid.",
+      });
 
-  const decryptedText = decryptText(secret.encryptedText);
+    const decryptedText = decryptText(secretParsed.encryptedText);
 
-  if (decryptedText) {
-    delete secrets[i];
-    res.status(200).json({ text: decryptedText });
-  } else {
+    if (decryptedText) {
+      await redisWrapper.del(i);
+
+      res.status(200).json({ text: decryptedText });
+    } else {
+      res.status(500).json({ error: 500, message: "Error decrypting." });
+    }
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 500, message: "Error decrypting." });
   }
 });

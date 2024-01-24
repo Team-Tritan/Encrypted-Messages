@@ -1,6 +1,6 @@
 "use strict";
 
-import config from "../../config";
+import config from "../config";
 import crypto from "crypto";
 
 let secretKey = config.secretKey.toString();
