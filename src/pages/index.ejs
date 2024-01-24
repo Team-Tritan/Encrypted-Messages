@@ -143,7 +143,6 @@
           <textarea
             id="textarea"
             rows="8"
-            placeholder="Say some stuff"
             class="w-full p-2 bg-black outline-none"
           ></textarea>
         </div>
@@ -161,6 +160,9 @@
 <script>
   $(document).ready(function () {
     let text = $("#textarea").val();
+
+    $("#textarea").val(`Unencrypting...`);
+
 
     $.ajax({
       type: "GET",
