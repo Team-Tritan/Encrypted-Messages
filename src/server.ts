@@ -2,10 +2,9 @@
 
 import express, { type Request, type Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { encryptText, decryptText, validateRequestBody } from "./utils";
+import { encryptText, decryptText, validateRequestBody, RedisWrapper } from "./utils";
 import { notFoundHandler, errorHandler } from "./middleware";
 import config from "./config";
-import { RedisWrapper } from "./utils/redis";
 
 interface Secret {
   id: string;

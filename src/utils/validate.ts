@@ -14,7 +14,8 @@ const validateRequestBody = (
   }
 
   if (typeof hours !== "number" || !hours) {
-    hours = 24;
+    // default expires in 72 hours if not provided
+    hours = 72;
   }
 
   return { text, hours };
