@@ -25,14 +25,13 @@ app.disable("x-powered-by");
 const redisWrapper = new RedisWrapper();
 const generateId = (): string => uuidv4();
 
-// app.get("/", (req: Request, res: Response) => {
-//   let { i, t } = req.query;
+app.get("/", (req: Request, res: Response) => {
+  let { i, t } = req.query;
 
-//   if (i && t)
-//     return res.render("index.ejs", { i, t, encrypt: false, decrypt: true });
-//   else
-//     return res.render("index.ejs", { i, t, encrypt: true, decrypt: false });
-// });
+  if (i && t)
+    return res.render("index.ejs", { i, t, encrypt: false, decrypt: true });
+  else return res.render("index.ejs", { i, t, encrypt: true, decrypt: false });
+});
 
 app.post("/api/new", async (req: Request, res: Response) => {
   const validReq = validateRequestBody(req, res);
