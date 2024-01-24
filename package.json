@@ -13,8 +13,8 @@
     "uuid": "^9.0.1"
   },
   "scripts": {
-    "dev": "nodemon --exec ts-node src/server.ts",
+    "dev": "cd src && nodemon --exec ts-node server.ts",
     "build": "tsc -p . && cp -r src/pages dist/ && cp -r src/public dist/",
-    "start": "node dist/server.js"
+    "start": "cd dist && node server.js"
   }
 }
