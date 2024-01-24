@@ -1,10 +1,21 @@
 version: "3"
 services:
-  app:
-    build: .
+  backend:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     depends_on:
+      - redis
+  frontend:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend
       - redis
   redis:
     image: "redis:alpine"

@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+}
+
+.max-w-3xl {
+  box-shadow: 6px 4px 8px 9px rgba(128, 0, 128, 0.5);
+}
+
+button {
+  box-shadow: 0 10px 30px 0 rgba(128, 0, 128, 0.5);
+  background-color: #450445;
+}
+
+textarea {
+  background-color: rgba(0, 0, 0, 0.963);
+}
