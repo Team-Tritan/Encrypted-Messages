@@ -1,3 +1,5 @@
+"use strict";
+
 import Redis, { RedisOptions } from "ioredis";
 
 export class RedisWrapper {
@@ -12,8 +14,13 @@ export class RedisWrapper {
 
     this.client = new Redis(options);
 
-    this.client.connect(() => {
-      console.log("Redis client connected");
+    this.client.on("connect", () => {
+      console.log("[DB] Redis client connected");
+    });
+
+    this.client.on("error", (err) => {
+      console.error("[DB] Redis connection error:", err);
+      process.exit(1);
     });
   }
 
