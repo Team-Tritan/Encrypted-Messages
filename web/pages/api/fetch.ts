@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const instance: AxiosInstance = axios.create({
-  baseURL: "http://backend:3000/api/new",
+  baseURL: "http://backend:3000/api/fetch",
 });
 
 export default async function handler(
@@ -12,7 +12,6 @@ export default async function handler(
   try {
     const response: AxiosResponse = await instance({
       method: req.method?.toLowerCase(),
-      url: req.url,
       data: req.body,
     });
 

@@ -12,7 +12,6 @@ export default async function handler(
   try {
     const response: AxiosResponse = await instance({
       method: req.method?.toLowerCase(),
-      url: req.url,
       data: req.body,
     });
 
