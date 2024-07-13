@@ -2,9 +2,15 @@
 
 import express, { type Request, type Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { encryptText, decryptText, validateRequestBody, RedisWrapper } from "./utils";
+import {
+  encryptText,
+  decryptText,
+  validateRequestBody,
+  RedisWrapper,
+} from "./utils";
 import { notFoundHandler, errorHandler } from "./middleware";
 import config from "./config";
+import cors from "cors";
 
 interface Secret {
   id: string;
@@ -14,6 +20,7 @@ interface Secret {
 
 const app = express();
 
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
